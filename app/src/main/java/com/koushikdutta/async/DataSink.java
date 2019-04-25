@@ -1,0 +1,25 @@
+package com.koushikdutta.async;
+
+import com.koushikdutta.async.callback.CompletedCallback;
+import com.koushikdutta.async.callback.WritableCallback;
+import java.nio.ByteBuffer;
+
+public interface DataSink {
+    void close();
+
+    CompletedCallback getClosedCallback();
+
+    AsyncServer getServer();
+
+    WritableCallback getWriteableCallback();
+
+    boolean isOpen();
+
+    void setClosedCallback(CompletedCallback completedCallback);
+
+    void setWriteableCallback(WritableCallback writableCallback);
+
+    void write(ByteBufferList byteBufferList);
+
+    void write(ByteBuffer byteBuffer);
+}

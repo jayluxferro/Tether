@@ -1,3 +1,53 @@
-<resources>
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Tether</string>
+    <string name="usb_on_no_adb" tools:ignore="ExtraTranslation">USB debugging is not enabled.\10Please click to enable USB debugging.</string>
+    <string name="usb_on_no_data">USB tether is running.\10Please open the Tether app on your computer.</string>
+    <string name="usb_on">USB tether is running.</string>
+    <string name="usb_off">Please connect your phone to your computer.</string>
+    <string name="tether_disabled">USB tether is not running.\10Click to toggle.</string>
+    <string name="bytes">%d bytes</string>
+    <string name="kilobytes">%.3f KB</string>
+    <string name="megabytes">%.3f MB</string>
+    <string name="confirm_tether_off">Are you sure you wish to turn off USB tether?</string>
+    <string name="tethering">Tethering USB connection.</string>
+    <string name="help">Help</string>
+    <string name="select_os">Select Operating System</string>
+    <string name="mac">Mac</string>
+    <string name="windows">Windows</string>
+    <string name="linux">Linux</string>
+    <string name="downloading_tether">Downloading Tether for PC</string>
+    <string name="downloading_drivers">Downloading Drivers</string>
+    <string name="error_downloading">Error Downloading</string>
+    <string name="error_downloading_info">Please verify that you have an SD Card inserted and that there is sufficient storage.</string>
+    <string name="download_complete">Download Complete</string>
+    <string name="download_complete_info">The Tether for PC installation file can be found on your SD Card in the \"ClockworkMod\" folder.\10\10You can share this file with your computer by enabling \"USB Mass Storage\" on your phone.\10\10You can do this by swiping down the notification area.</string>
+    <string name="download_pc">Download Tether for PC</string>
+    <string name="tether_is_slow">Tether is Slow</string>
+    <string name="tether_is_slow_info">Your USB Tether speed is limited to the speed of the slowest USB peripheral attached.\10\10It is recommended that you attach your phone directly to your PC, away from other USB peripheral connections. Disconnect any older and unused USB peripherals that may inhibit your speed.</string>
+    <string name="tether_version">Tether Version</string>
+    <string name="tether_pc_outdated">The Tether app on your PC is outdated. Please update it!</string>
+    <string name="tether_android_outdated">The Tether app on your phone is outdated. Please update it from the Android Market!</string>
+    <string name="trial_quota_exceeded">Trial Quota Exceeded</string>
+    <string name="trial_quota_exceeded_message">Your Tether daily trial quota has been exceeded.\10\10Your daily usage quota of %1$dMB will be reset in %2$d hours.\10\10Buy Tether to remove the quota and support development!</string>
+    <string name="buy_tether">Buy Tether</string>
+    <string name="paypal">PayPal</string>
+    <string name="android_market_inapp">Android Market In-App</string>
+    <string name="redeem_code">Redeem Code</string>
+    <string name="payment_options">Payment Options</string>
+    <string name="purchase_thanks">Thanks for purchasing Tether!</string>
+    <string name="daily_trial_quota">daily trial quota</string>
+    <string name="days_left">%d days left in trial version of tether</string>
+    <string name="recover_purchase" tools:ignore="MissingTranslation">Recover Purchase</string>
+    <string name="recover_options">Recover Options</string>
+    <string name="tether_will_not_connect">Tether will not Connect</string>
+    <string name="tether_connect_info">If Tether for PC detects your phone, but does not connect, this may be due to firewall or anti-virus software running on your PC.\10\10Please disable your anti-virus or firewall software to try fixing Tether. If that works, add a firewall exception allowing the entire Tether installation folder.</string>
+    <string name="support">Support</string>
+    <string name="support_info">Having problems? Please read the instructions on the Market for common troubleshooting issues.\10\10If they do not work, feel free to email koush@clockworkmod.com for more support. Please include the full log from the Tether for PC application in your email.</string>
+    <string name="email">Email</string>
+    <string name="market">Market</string>
+    <string name="tether_successful">Tethering Successful</string>
+    <string name="tether_successful_info">It looks like your Tether connection is working! I\'d appreciate it if you gave ClockworkMod a great review!\10\10Not working? Check out the troubleshooting section on the Market for resolving common problems.</string>
+    <string name="rate_tether">Rate Tether</string>
+    <string name="amazon">Amazon</string>
 </resources>

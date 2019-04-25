@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:background="@drawable/background" android:layout_width="match_parent" android:layout_height="match_parent" android:layout_centerInParent="true">
+    <ImageView android:layout_gravity="center_horizontal" android:id="@+id/usb_icon" android:layout_width="match_parent" android:layout_height="wrap_content" android:src="@drawable/usb_off" android:scaleType="center" android:layout_weight="1"/>
+    <LinearLayout android:orientation="vertical" android:layout_width="match_parent" android:layout_height="210dp" android:layout_weight="1">
+        <TextView android:gravity="center_horizontal" android:layout_gravity="center_horizontal" android:id="@+id/usb_status" android:paddingLeft="20dp" android:paddingRight="20dp" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/usb_off" android:minLines="3" style="@android:style/TextAppearance.Large"/>
+        <LinearLayout android:layout_gravity="center_horizontal" android:orientation="vertical" android:id="@+id/quota_layout" android:paddingLeft="20dp" android:paddingRight="20dp" android:visibility="gone" android:layout_width="match_parent" android:layout_height="wrap_content">
+            <TextView android:gravity="center_horizontal" android:layout_gravity="center_horizontal" android:id="@+id/quota_status" android:padding="5dp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/daily_trial_quota" style="@android:style/TextAppearance.Small"/>
+            <ProgressBar android:layout_gravity="center_vertical" android:id="@+id/quota" android:paddingLeft="20dp" android:layout_width="match_parent" android:layout_height="10dp" android:layout_weight="1" style="?android:attr/progressBarStyleHorizontal"/>
+        </LinearLayout>
+        <LinearLayout android:gravity="center_horizontal" android:layout_gravity="center_horizontal" android:orientation="horizontal" android:id="@+id/help" android:paddingTop="40dp" android:layout_width="wrap_content" android:layout_height="wrap_content">
+            <ImageView android:layout_gravity="center_vertical" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/help"/>
+            <TextView android:layout_gravity="center_vertical" android:paddingLeft="30dp" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/help" android:layout_weight="1" style="@android:style/TextAppearance.Large"/>
+        </LinearLayout>
+        <LinearLayout android:layout_gravity="center_horizontal" android:orientation="vertical" android:id="@+id/data_stats" android:paddingTop="10dp" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="40dp" android:layout_marginRight="40dp">
+            <LinearLayout android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="1">
+                <ImageView android:layout_gravity="center_vertical" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/upload"/>
+                <TextView android:layout_gravity="center_vertical" android:id="@+id/data_sent" android:paddingLeft="30dp" android:layout_width="wrap_content" android:layout_height="wrap_content" style="@android:style/TextAppearance.Large"/>
+            </LinearLayout>
+            <LinearLayout android:orientation="horizontal" android:paddingBottom="20dp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="1">
+                <ImageView android:layout_gravity="center_vertical" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/download"/>
+                <TextView android:layout_gravity="center_vertical" android:id="@+id/data_received" android:paddingLeft="30dp" android:layout_width="wrap_content" android:layout_height="wrap_content" style="@android:style/TextAppearance.Large"/>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
