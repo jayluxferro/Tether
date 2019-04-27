@@ -22,6 +22,7 @@
         android:exported="true"
         android:launchMode="singleTask"
         android:screenOrientation="portrait"
+        android:usesCleartextTraffic="true"
         android:name=".TetherApplication">
         <activity android:name=".TetherActivity" >
             <intent-filter>

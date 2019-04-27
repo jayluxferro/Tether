@@ -1,6 +1,6 @@
 package com.koushikdutta.async.http.filter;
 
-import android.support.p002v4.view.MotionEventCompat;
+import android.support.v4.view.MotionEventCompat;
 import com.koushikdutta.async.ByteBufferList;
 import com.koushikdutta.async.DataEmitter;
 import com.koushikdutta.async.DataEmitterReader;
@@ -13,6 +13,8 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.zip.CRC32;
 import java.util.zip.Inflater;
+
+import static com.koushikdutta.async.http.libcore.Memory.peekShort;
 
 public class GZIPInputFilter extends InflaterInputFilter {
     private static final int FCOMMENT = 16;
@@ -44,7 +46,7 @@ public class GZIPInputFilter extends InflaterInputFilter {
                     }
 
                     public void onDataAvailable(DataEmitter emitter, ByteBufferList bb) {
-                        if (C02891.this.hcrc) {
+                        if (hcrc) {
                             while (bb.size() > 0) {
                                 ByteBuffer b = bb.remove();
                                 GZIPInputFilter.this.crc.update(b.array(), b.arrayOffset() + b.position(), b.remaining());
@@ -55,7 +57,8 @@ public class GZIPInputFilter extends InflaterInputFilter {
 
                 public void tap(byte[] header) {
                     boolean z = true;
-                    if (Memory.peekShort(header, 0, ByteOrder.LITTLE_ENDIAN) != (short) -29921) {
+                    short magic = peekShort(header, 0, ByteOrder.LITTLE_ENDIAN);
+                    if (peekShort(header, 0, ByteOrder.LITTLE_ENDIAN) != (short) -29921) {
                         GZIPInputFilter.this.report(new IOException(String.format("unknown format (magic number %x)", new Object[]{Short.valueOf(magic)})));
                         return;
                     }
@@ -78,18 +81,18 @@ public class GZIPInputFilter extends InflaterInputFilter {
                                 }
 
                                 public void tap(byte[] buf) {
-                                    if (C02891.this.hcrc) {
+                                    if (hcrc) {
                                         GZIPInputFilter.this.crc.update(buf, 0, buf.length);
                                     }
-                                    C02891.this.next();
+                                    next();
                                 }
                             }
 
                             public void tap(byte[] header) {
-                                if (C02891.this.hcrc) {
+                                if (hcrc) {
                                     GZIPInputFilter.this.crc.update(header, 0, 2);
                                 }
-                                pushParser.readBuffer(Memory.peekShort(header, 0, ByteOrder.LITTLE_ENDIAN) & 65535).tap(new C02851());
+                                pushParser.readBuffer(peekShort(header, 0, ByteOrder.LITTLE_ENDIAN) & 65535).tap(new C02851());
                             }
                         });
                     }
@@ -114,7 +117,7 @@ public class GZIPInputFilter extends InflaterInputFilter {
                     parser.tap(new TapCallback() {
                         public void tap(byte[] header) {
                             if (header != null) {
-                                if (((short) ((int) GZIPInputFilter.this.crc.getValue())) != Memory.peekShort(header, 0, ByteOrder.LITTLE_ENDIAN)) {
+                                if (((short) ((int) GZIPInputFilter.this.crc.getValue())) != peekShort(header, 0, ByteOrder.LITTLE_ENDIAN)) {
                                     GZIPInputFilter.this.report(new IOException("CRC mismatch"));
                                     return;
                                 }

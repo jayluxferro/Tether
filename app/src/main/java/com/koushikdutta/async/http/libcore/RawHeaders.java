@@ -18,7 +18,7 @@ public final class RawHeaders {
     private String statusLine;
 
     /* renamed from: com.koushikdutta.async.http.libcore.RawHeaders$1 */
-    class C01461 implements Comparator<String> {
+    static class C01461 implements Comparator<String> {
         C01461() {
         }
 
@@ -34,6 +34,10 @@ public final class RawHeaders {
             }
             return String.CASE_INSENSITIVE_ORDER.compare(a, b);
         }
+    }
+
+    public RawHeaders(){
+
     }
 
     public RawHeaders(RawHeaders copyFrom) {

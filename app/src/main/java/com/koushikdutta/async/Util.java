@@ -3,8 +3,14 @@ package com.koushikdutta.async;
 import com.koushikdutta.async.callback.CompletedCallback;
 import com.koushikdutta.async.callback.DataCallback;
 import com.koushikdutta.async.callback.WritableCallback;
+import com.koushikdutta.async.http.filter.ChunkedInputFilter;
+import com.koushikdutta.async.http.filter.GZIPInputFilter;
+import com.koushikdutta.async.http.filter.InflaterInputFilter;
+import com.koushikdutta.async.http.libcore.RawHeaders;
+
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
@@ -118,17 +124,23 @@ public class Util {
                 return;
             }
         }
-        final InputStream is = new FileInputStream(file);
-        pump(is, ds, new CompletedCallback() {
-            public void onCompleted(Exception ex) {
-                try {
-                    is.close();
-                    callback.onCompleted(ex);
-                } catch (IOException e) {
-                    callback.onCompleted(e);
+        final InputStream is;
+        try {
+            is = new FileInputStream(file);
+            pump(is, ds, new CompletedCallback() {
+                public void onCompleted(Exception ex) {
+                    try {
+                        is.close();
+                        callback.onCompleted(ex);
+                    } catch (IOException e) {
+                        callback.onCompleted(e);
+                    }
                 }
-            }
-        });
+            });
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
     }
 
     public static void writeAll(final DataSink sink, final ByteBufferList bb, final CompletedCallback callback) {
@@ -153,5 +165,62 @@ public class Util {
         ByteBufferList bbl = new ByteBufferList();
         bbl.add(bb);
         writeAll(sink, bbl, callback);
+    }
+
+    public static DataCallback getBodyDecoder(DataCallback callback, RawHeaders headers, boolean server, CompletedCallback reporter) {
+        int _contentLength;
+        if ("gzip".equals(headers.get("Content-Encoding"))) {
+            GZIPInputFilter gunzipper = new GZIPInputFilter();
+            gunzipper.setDataCallback(callback);
+            gunzipper.setEndCallback(reporter);
+            callback = gunzipper;
+        } else if ("deflate".equals(headers.get("Content-Encoding"))) {
+            InflaterInputFilter inflater = new InflaterInputFilter();
+            inflater.setEndCallback(reporter);
+            inflater.setDataCallback(callback);
+            callback = inflater;
+        }
+        try {
+            _contentLength = Integer.parseInt(headers.get("Content-Length"));
+        } catch (Exception e) {
+            _contentLength = -1;
+        }
+        final int contentLength = _contentLength;
+        if (-1 != contentLength) {
+            if (contentLength < 0) {
+                reporter.onCompleted(new Exception("not using chunked encoding, and no content-length found."));
+                return callback;
+            } else if (contentLength == 0) {
+                reporter.onCompleted(null);
+                return callback;
+            } else {
+                FilteredDataCallback contentLengthWatcher = new FilteredDataCallback() {
+                    int totalRead = 0;
+
+                    public void onDataAvailable(DataEmitter emitter, ByteBufferList bb) {
+                        Assert.assertTrue(this.totalRead < contentLength);
+                        ByteBufferList list = bb.get(Math.min(contentLength - this.totalRead, bb.remaining()));
+                        this.totalRead += list.remaining();
+                        super.onDataAvailable(emitter, list);
+                        if (this.totalRead == contentLength) {
+                            report(null);
+                        }
+                    }
+                };
+                contentLengthWatcher.setDataCallback(callback);
+                contentLengthWatcher.setEndCallback(reporter);
+                return contentLengthWatcher;
+            }
+        } else if ("chunked".equalsIgnoreCase(headers.get("Transfer-Encoding"))) {
+            ChunkedInputFilter chunker = new ChunkedInputFilter();
+            chunker.setEndCallback(reporter);
+            chunker.setDataCallback(callback);
+            return chunker;
+        } else if (!server) {
+            return callback;
+        } else {
+            reporter.onCompleted(null);
+            return callback;
+        }
     }
 }

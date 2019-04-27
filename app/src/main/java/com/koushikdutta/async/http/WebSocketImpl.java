@@ -61,7 +61,7 @@ public class WebSocketImpl implements WebSocket {
         }
     }
 
-    private void setupParser() {
+    public void setupParser() {
         this.mParser = new HybiParser(this.mSocket) {
             /* Access modifiers changed, original: protected */
             public void report(Exception ex) {
@@ -139,7 +139,7 @@ public class WebSocketImpl implements WebSocket {
             return null;
         }
         WebSocket ret = new WebSocketImpl(response.detachSocket());
-        ret.setupParser();
+        ((WebSocketImpl) ret).setupParser();
         return ret;
     }
 

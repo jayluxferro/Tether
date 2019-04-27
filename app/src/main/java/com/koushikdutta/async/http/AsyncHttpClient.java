@@ -45,7 +45,7 @@ public class AsyncHttpClient {
     }
 
     /* renamed from: com.koushikdutta.async.http.AsyncHttpClient$3 */
-    class C01303 implements ResultConvert {
+    static class C01303 implements ResultConvert {
         C01303() {
         }
 
@@ -55,7 +55,7 @@ public class AsyncHttpClient {
     }
 
     /* renamed from: com.koushikdutta.async.http.AsyncHttpClient$4 */
-    class C01314 implements ResultConvert {
+    static class C01314 implements ResultConvert {
         C01314() {
         }
 
@@ -71,7 +71,7 @@ public class AsyncHttpClient {
     }
 
     /* renamed from: com.koushikdutta.async.http.AsyncHttpClient$5 */
-    class C01325 implements ResultConvert {
+    static class C01325 implements ResultConvert {
         C01325() {
         }
 
@@ -104,7 +104,7 @@ public class AsyncHttpClient {
     }
 
     /* renamed from: com.koushikdutta.async.http.AsyncHttpClient$1 */
-    class C01341 extends InternalConnectCallback {
+    static class C01341 extends InternalConnectCallback {
         AsyncSocket cancelSocket;
         Object scheduled;
         private final /* synthetic */ HttpConnectCallback val$callback;
@@ -117,6 +117,7 @@ public class AsyncHttpClient {
         private final /* synthetic */ URI val$uri;
 
         C01341(AsyncHttpRequest asyncHttpRequest, AsyncServer asyncServer, final CancelableImpl cancelableImpl, final HttpConnectCallback httpConnectCallback, URI uri, int i, int i2, String str) {
+            super();
             this.val$request = asyncHttpRequest;
             this.val$server = asyncServer;
             this.val$cancel = cancelableImpl;
@@ -125,7 +126,7 @@ public class AsyncHttpClient {
             this.val$finalPort = i;
             this.val$redirectCount = i2;
             this.val$lookup = str;
-            super();
+
             if (asyncHttpRequest.getTimeout() > 0) {
                 this.scheduled = asyncServer.postDelayed(new Runnable() {
                     public void run() {
@@ -471,20 +472,18 @@ public class AsyncHttpClient {
                     cancel.response = response;
                     final int contentLength = response.getHeaders().getContentLength();
                     FileOutputStream fileOutputStream = fout;
-                    final FileCallback fileCallback = fileCallback;
+
                     final AsyncHttpResponse asyncHttpResponse = response;
                     response.setDataCallback(new OutputStreamDataCallback(fileOutputStream) {
                         public void onDataAvailable(DataEmitter emitter, ByteBufferList bb) {
-                            C012310 c012310 = C012310.this;
-                            c012310.mDownloaded += bb.remaining();
+                            mDownloaded += bb.remaining();
                             super.onDataAvailable(emitter, bb);
-                            AsyncHttpClient.invokeProgress(fileCallback, asyncHttpResponse, C012310.this.mDownloaded, contentLength);
+                            AsyncHttpClient.invokeProgress(fileCallback, asyncHttpResponse, mDownloaded, contentLength);
                         }
                     });
                     final FileOutputStream fileOutputStream2 = fout;
                     final Handler handler = handler2;
                     final FileCallback fileCallback2 = fileCallback;
-                    final File file = file;
                     final AsyncHttpResponse asyncHttpResponse2 = response;
                     response.setEndCallback(new CompletedCallback() {
                         public void onCompleted(Exception ex) {
@@ -527,27 +526,27 @@ public class AsyncHttpClient {
                 final RequestCallback requestCallback = callback;
                 response.setDataCallback(new DataCallback() {
                     public void onDataAvailable(DataEmitter emitter, ByteBufferList bb) {
-                        C012611 c012611 = C012611.this;
-                        c012611.mDownloaded += bb.remaining();
-                        C012611.this.buffer.add(bb);
+
+                        mDownloaded += bb.remaining();
+                        buffer.add(bb);
                         bb.clear();
-                        AsyncHttpClient.invokeProgress(requestCallback, response, C012611.this.mDownloaded, contentLength);
+                        AsyncHttpClient.invokeProgress(requestCallback, response, mDownloaded, contentLength);
                     }
                 });
                 final ResultConvert resultConvert = convert;
-                final Handler handler = handler;
+
                 final RequestCallback requestCallback2 = callback;
                 final AsyncHttpResponse asyncHttpResponse = response;
                 response.setEndCallback(new CompletedCallback() {
                     public void onCompleted(Exception ex) {
                         try {
                             Object obj;
-                            Object value = resultConvert.convert(C012611.this.buffer);
-                            Handler handler = handler;
+                            Object value = resultConvert.convert(buffer);
+
                             RequestCallback requestCallback = requestCallback2;
                             AsyncServer asyncServer = AsyncServer.getDefault();
-                            AsyncHttpResponse asyncHttpResponse = asyncHttpResponse;
-                            if (C012611.this.buffer != null) {
+
+                            if (buffer != null) {
                                 obj = value;
                             } else {
                                 obj = null;

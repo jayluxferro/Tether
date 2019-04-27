@@ -11,9 +11,12 @@ import junit.framework.Assert;
 public class InflaterInputFilter extends FilteredDataCallback {
     private Inflater mInflater;
 
+    ByteBufferList transformed = new ByteBufferList();
+
+    @Override
     public void onDataAvailable(DataEmitter emitter, ByteBufferList bb) {
         try {
-            ByteBufferList transformed = new ByteBufferList();
+
             ByteBuffer output = ByteBuffer.allocate(bb.remaining() * 2);
             int totalInflated = 0;
             while (bb.size() > 0) {

@@ -1,6 +1,6 @@
 package com.koushikdutta.async.http.libcore;
 
-import android.support.p002v4.view.MotionEventCompat;
+import android.support.v4.view.MotionEventCompat;
 import java.nio.ByteOrder;
 
 public final class Memory {

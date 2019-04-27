@@ -124,7 +124,7 @@ public class AsyncSSLSocket implements AsyncSocket {
         }
     }
 
-    static {
+    {
         try {
             if (VERSION.SDK_INT <= 15) {
                 throw new Exception();
@@ -165,7 +165,6 @@ public class AsyncSSLSocket implements AsyncSocket {
             if (!this.finishedHandshake) {
                 if (this.engine.getHandshakeStatus() == HandshakeStatus.NOT_HANDSHAKING || this.engine.getHandshakeStatus() == HandshakeStatus.FINISHED) {
                     TrustManagerFactory tmf = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
-                    tmf.init(null);
                     boolean trusted = false;
                     TrustManager[] trustManagers = tmf.getTrustManagers();
                     int length = trustManagers.length;

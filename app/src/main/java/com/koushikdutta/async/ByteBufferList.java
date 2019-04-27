@@ -20,6 +20,10 @@ public class ByteBufferList implements Iterable<ByteBuffer> {
         add(ByteBuffer.wrap(buf));
     }
 
+    public ByteBufferList(){
+
+    }
+
     public ByteBuffer[] toArray() {
         return (ByteBuffer[]) this.mBuffers.toArray(new ByteBuffer[this.mBuffers.size()]);
     }

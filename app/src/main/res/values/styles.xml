@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    </style>
     <style name="Dialog">
         <item name="android:windowBackground">@drawable/panel_background</item>
         <item name="android:windowFrame">@null</item>

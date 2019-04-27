@@ -12,7 +12,7 @@ public final class HttpDate {
     private static final ThreadLocal<DateFormat> STANDARD_DATE_FORMAT = new C01451();
 
     /* renamed from: com.koushikdutta.async.http.libcore.HttpDate$1 */
-    class C01451 extends ThreadLocal<DateFormat> {
+    static class C01451 extends ThreadLocal<DateFormat> {
         C01451() {
         }
 

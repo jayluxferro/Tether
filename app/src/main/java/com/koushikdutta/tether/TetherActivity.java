@@ -14,9 +14,11 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.provider.Settings;
 import android.provider.Settings.Secure;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,7 +33,7 @@ import android.widget.TextView;
 import org.json.JSONObject;
 
 public class TetherActivity extends Activity {
-    public static String CONFIG_URL = "https://www.clockworkmod.com/tether/config.js";
+    public static String CONFIG_URL = "http://www.clockworkmod.com/tether/config.js";
     static final String LOGTAG = "Tether";
     MenuItem mBuyMenuItem;
     boolean mCancelledDownload = false;
@@ -92,6 +94,7 @@ public class TetherActivity extends Activity {
         }
 
         C017211() {
+
         }
 
         public void onClick(View v) {
@@ -279,22 +282,24 @@ public class TetherActivity extends Activity {
     /* Code decompiled incorrectly, please refer to instructions dump. */
     public void refreshAdb(boolean repost) {
         try {
-            if (Secure.getInt(getContentResolver(), "adb_enabled") == 0) {
-                this.mDataStats.setVisibility(View.GONE);
-                this.mHelpIcon.setVisibility(View.VISIBLE);
-                this.mUsbText.setText(R.string.usb_on_no_adb);
-                this.mUsbIcon.setImageResource(R.drawable.usb_broken);
-                this.mUsbIcon.setOnClickListener(new C01813());
-                stopService(new Intent(this, com.koushikdutta.tether.TetherService.class));
-                if (repost) {
-                    this.mHandler.postDelayed(new C01802(), 1000);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                if (Settings.Global.getInt(getContentResolver(), "adb_enabled") == 0) {
+                    this.mDataStats.setVisibility(View.GONE);
+                    this.mHelpIcon.setVisibility(View.VISIBLE);
+                    this.mUsbText.setText(R.string.usb_on_no_adb);
+                    this.mUsbIcon.setImageResource(R.drawable.usb_broken);
+                    this.mUsbIcon.setOnClickListener(new C01813());
+                    stopService(new Intent(this, TetherService.class));
+                    if (repost) {
+                        this.mHandler.postDelayed(new C01802(), 1000);
+                        return;
+                    }
                     return;
                 }
-                return;
             }
             boolean _enabled = false;
             for (RunningServiceInfo service : ((ActivityManager) getSystemService(Context.ACTIVITY_SERVICE)).getRunningServices(Integer.MAX_VALUE)) {
-                if (com.koushikdutta.tether.TetherService.class.getName().equals(service.service.getClassName())) {
+                if (TetherService.class.getName().equals(service.service.getClassName())) {
                     _enabled = true;
                     break;
                 }
@@ -308,7 +313,7 @@ public class TetherActivity extends Activity {
                     }
 
                     public void onClick(DialogInterface dialog, int which) {
-                        TetherActivity.this.stopService(new Intent(TetherActivity.this, com.koushikdutta.tether.TetherService.class));
+                        TetherActivity.this.stopService(new Intent(TetherActivity.this, TetherService.class));
                     }
                 }
 
@@ -318,17 +323,17 @@ public class TetherActivity extends Activity {
                     TetherActivity.this.mUsbIcon.setAnimation(scale);
                     if (enabled) {
                         Builder builder = new Builder(TetherActivity.this);
-                        builder.setPositiveButton("", new C01821());
-                        builder.setNegativeButton("", null);
+                        builder.setPositiveButton("Yes", new C01821());
+                        builder.setNegativeButton("No", null);
                         builder.setTitle(R.string.app_name);
                         builder.setMessage(R.string.confirm_tether_off);
                         builder.create().show();
                     } else if (Helper.mExpired) {
                         Helper.mExpired = false;
                     } else {
-                        TetherActivity.this.startService(new Intent(TetherActivity.this, com.koushikdutta.tether.TetherService.class));
+                        TetherActivity.this.startService(new Intent(TetherActivity.this, TetherService.class));
                     }
-                    TetherActivity.this.refreshAdb(false);
+                    TetherActivity.this.refreshAdb(true);
                 }
             });
             if (!enabled) {
@@ -405,7 +410,7 @@ public class TetherActivity extends Activity {
         Builder tetherSlow = new Builder(this);
         tetherSlow.setTitle(R.string.tether_is_slow);
         tetherSlow.setMessage(R.string.tether_is_slow_info);
-        tetherSlow.setPositiveButton("", null);
+        tetherSlow.setPositiveButton("Ok", null);
         tetherSlow.create().show();
     }
 
@@ -414,7 +419,7 @@ public class TetherActivity extends Activity {
         Builder tetherSlow = new Builder(this);
         tetherSlow.setTitle(R.string.tether_will_not_connect);
         tetherSlow.setMessage(R.string.tether_connect_info);
-        tetherSlow.setPositiveButton("", null);
+        tetherSlow.setPositiveButton("Ok", null);
         tetherSlow.create().show();
     }
 
@@ -423,7 +428,7 @@ public class TetherActivity extends Activity {
         Builder email = new Builder(this);
         email.setTitle(R.string.support);
         email.setMessage(R.string.support_info);
-        email.setNegativeButton("", null);
+        email.setNegativeButton("Ok", null);
         email.setPositiveButton(R.string.market, new C01845());
         email.create().show();
     }
@@ -433,7 +438,7 @@ public class TetherActivity extends Activity {
         Builder done = new Builder(this);
         done.setTitle(R.string.download_complete);
         done.setMessage(R.string.download_complete_info);
-        done.setPositiveButton("", null);
+        done.setPositiveButton("Ok", null);
         done.create().show();
     }
 
@@ -454,7 +459,7 @@ public class TetherActivity extends Activity {
                 Builder error = new Builder(TetherActivity.this);
                 error.setTitle(R.string.error_downloading);
                 error.setMessage(R.string.error_downloading_info);
-                error.setPositiveButton("", null);
+                error.setPositiveButton("Ok", null);
                 error.create().show();
             }
         };
@@ -617,7 +622,7 @@ public class TetherActivity extends Activity {
         Builder builder = new Builder(this);
         builder.setTitle(R.string.tether_version);
         builder.setMessage(R.string.tether_android_outdated);
-        builder.setPositiveButton("", new C017312());
+        builder.setPositiveButton("Ok", new C017312());
         builder.create().show();
     }
 
@@ -625,7 +630,7 @@ public class TetherActivity extends Activity {
         Builder builder = new Builder(this);
         builder.setTitle(R.string.tether_version);
         builder.setMessage(R.string.tether_pc_outdated);
-        builder.setPositiveButton("", new C017413());
+        builder.setPositiveButton("Ok", new C017413());
         builder.create().show();
     }
 

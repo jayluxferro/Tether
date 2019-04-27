@@ -70,11 +70,11 @@ public class ChunkedInputFilter extends FilteredDataCallback {
     }
 
     private boolean checkLF(char b) {
-        return checkByte(b, 10);
+        return checkByte(b, '\n');
     }
 
     private boolean checkCR(char b) {
-        return checkByte(b, 13);
+        return checkByte(b, '\r');
     }
 
     public void onDataAvailable(DataEmitter emitter, ByteBufferList bb) {

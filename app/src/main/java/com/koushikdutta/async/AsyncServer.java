@@ -38,7 +38,7 @@ public class AsyncServer {
     }
 
     /* renamed from: com.koushikdutta.async.AsyncServer$1 */
-    class C01051 extends AsyncServer {
+    static class C01051 extends AsyncServer {
         C01051() {
             setAutostart(true);
         }
@@ -336,7 +336,7 @@ public class AsyncServer {
                 shutdownEverything(selector);
             }
         }
-        shutdownEverything(selector);
+        /*shutdownEverything(selector);
         synchronized (server) {
             if (server.mSelector == selector) {
                 server.mQueue = new LinkedList();
@@ -344,7 +344,7 @@ public class AsyncServer {
                 server.mAffinity = null;
             }
         }
-        Log.i(LOGTAG, "****AsyncServer has shut down.****");
+        Log.i(LOGTAG, "****AsyncServer has shut down.****");*/
     }
 
     private static void shutdownEverything(Selector selector) {

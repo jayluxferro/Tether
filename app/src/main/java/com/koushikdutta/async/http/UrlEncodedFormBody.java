@@ -35,6 +35,10 @@ public class UrlEncodedFormBody implements AsyncHttpRequestBody {
         buildData();
     }
 
+    public UrlEncodedFormBody(){
+        buildData();
+    }
+
     private void buildData() {
         boolean first = true;
         StringBuilder b = new StringBuilder();

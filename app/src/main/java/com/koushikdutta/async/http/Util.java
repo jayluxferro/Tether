@@ -43,7 +43,7 @@ public class Util {
             InflaterInputFilter inflater = new InflaterInputFilter();
             inflater.setEndCallback(reporter);
             inflater.setDataCallback(callback);
-            Object callback2 = inflater;
+            callback = inflater;
         }
         try {
             _contentLength = Integer.parseInt(headers.get("Content-Length"));
@@ -54,10 +54,10 @@ public class Util {
         if (-1 != contentLength) {
             if (contentLength < 0) {
                 reporter.onCompleted(new Exception("not using chunked encoding, and no content-length found."));
-                return callback2;
+                return callback;
             } else if (contentLength == 0) {
                 reporter.onCompleted(null);
-                return callback2;
+                return callback;
             } else {
                 FilteredDataCallback contentLengthWatcher = new FilteredDataCallback() {
                     int totalRead = 0;
@@ -72,20 +72,20 @@ public class Util {
                         }
                     }
                 };
-                contentLengthWatcher.setDataCallback(callback2);
+                contentLengthWatcher.setDataCallback(callback);
                 contentLengthWatcher.setEndCallback(reporter);
                 return contentLengthWatcher;
             }
         } else if ("chunked".equalsIgnoreCase(headers.get("Transfer-Encoding"))) {
             ChunkedInputFilter chunker = new ChunkedInputFilter();
             chunker.setEndCallback(reporter);
-            chunker.setDataCallback(callback2);
+            chunker.setDataCallback(callback);
             return chunker;
         } else if (!server) {
-            return callback2;
+            return callback;
         } else {
             reporter.onCompleted(null);
-            return callback2;
+            return callback;
         }
     }
 }

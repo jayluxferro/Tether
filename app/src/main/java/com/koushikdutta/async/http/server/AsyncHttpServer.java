@@ -76,13 +76,13 @@ public class AsyncHttpServer {
                     }
 
                     public void onCompleted(Exception ex) {
-                        C01561.this.resume();
+                        resume();
                         if (ex != null) {
                             AsyncHttpServer.this.report(ex);
                             return;
                         }
-                        C01561.this.hasContinued = true;
-                        C01561.this.onHeadersReceived();
+                        hasContinued = true;
+                        onHeadersReceived();
                     }
                 }
 
@@ -112,8 +112,8 @@ public class AsyncHttpServer {
                         this.res = new AsyncHttpServerResponseImpl(socket, this) {
                             /* Access modifiers changed, original: protected */
                             public void onEnd() {
-                                C01561.this.responseComplete = true;
-                                C01561.this.handleOnCompleted();
+                                responseComplete = true;
+                                handleOnCompleted();
                             }
                         };
                         AsyncHttpServer.this.onRequest(this, this.res);

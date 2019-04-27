@@ -362,7 +362,9 @@ public class TetherService extends Service {
         n.tickerText = getString(R.string.app_name);
         n.when = 0;
         n.flags = 34;
-        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, new Intent(this, TetherActivity.class), 0);
+
+        n.contentIntent = PendingIntent.getActivity(this, 0, new Intent(this, TetherActivity.class), 0);
+
         nm.notify(100, n);
     }
 

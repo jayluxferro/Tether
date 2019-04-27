@@ -41,7 +41,7 @@ public class PushParser {
         public void onDataAvailable(DataEmitter emitter, ByteBufferList bb) {
             while (PushParser.this.mWaiting.size() > 0) {
                 try {
-                    Class waiting = PushParser.this.mWaiting.peek();
+                    Object waiting = PushParser.this.mWaiting.peek();
                     if (waiting != null) {
                         PushParser pushParser;
                         if (waiting == Integer.TYPE) {
