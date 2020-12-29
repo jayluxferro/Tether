@@ -10,6 +10,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpUriRequest;
@@ -17,9 +18,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 class StreamUtility {
-    private static final String LOGTAG = StreamUtility.class.getSimpleName();
 
     StreamUtility() {
+
     }
 
     public static int copyStream(InputStream input, OutputStream output, Callback<Integer, Boolean> callback) throws IOException {
@@ -32,7 +33,7 @@ class StreamUtility {
             }
             output.write(stuff, 0, read);
             total += read;
-            if (callback != null && !((Boolean) callback.onCallback(Integer.valueOf(total))).booleanValue()) {
+            if (callback != null && !callback.onCallback(total)) {
                 return total;
             }
         }
@@ -57,7 +58,7 @@ class StreamUtility {
             final float length = (float) res.getEntity().getContentLength();
             copyStream(res.getEntity().getContent(), fout, new Callback<Integer, Boolean>() {
                 public Boolean onCallback(Integer result) {
-                    return (Boolean) callback.onCallback(Float.valueOf((((float) result.intValue()) / length) * 100.0f));
+                    return callback.onCallback((((float) result) / length) * 100.0f);
                 }
             });
         } finally {
@@ -69,8 +70,7 @@ class StreamUtility {
     public static String downloadUriAsString(HttpUriRequest req) throws IOException {
         AndroidHttpClient client = AndroidHttpClient.newInstance("Android");
         try {
-            String downloadUriAsString = downloadUriAsString(client.execute(req));
-            return downloadUriAsString;
+            return downloadUriAsString(client.execute(req));
         } finally {
             client.close();
         }

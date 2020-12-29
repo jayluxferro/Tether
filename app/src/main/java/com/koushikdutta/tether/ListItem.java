@@ -3,9 +3,9 @@ package com.koushikdutta.tether;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -93,15 +93,15 @@ public class ListItem {
     public View getView(Context context, View convertView) {
         int i;
         if (convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(this.Context.getListItemResource(), null);
+            convertView = LayoutInflater.from(context).inflate(this.Context.getListItemResource(), (ViewGroup) null);
         }
-        TextView title = (TextView) convertView.findViewById(R.id.title);
-        TextView summary = (TextView) convertView.findViewById(R.id.summary);
-        CheckBox cb = (CheckBox) convertView.findViewById(R.id.checkbox);
+        TextView title = convertView.findViewById(R.id.title);
+        TextView summary = convertView.findViewById(R.id.summary);
+        CheckBox cb = convertView.findViewById(R.id.checkbox);
         cb.setOnCheckedChangeListener(null);
         cb.setChecked(this.checked);
         final View cv = convertView;
-        cb.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+        cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 ListItem.this.checked = isChecked;
                 ListItem.this.onClick(cv);
@@ -123,7 +123,7 @@ public class ListItem {
         } else {
             summary.setVisibility(View.GONE);
         }
-        ImageView iv = (ImageView) convertView.findViewById(R.id.image);
+        ImageView iv = convertView.findViewById(R.id.image);
         if (iv != null) {
             if (this.Icon != 0) {
                 iv.setVisibility(View.VISIBLE);
@@ -135,10 +135,9 @@ public class ListItem {
         return convertView;
     }
 
-    /* Access modifiers changed, original: 0000 */
     public void onClickInternal(View view) {
         if (this.CheckboxVisible) {
-            CheckBox cb = (CheckBox) view.findViewById(R.id.checkbox);
+            CheckBox cb = view.findViewById(R.id.checkbox);
             cb.setChecked(!cb.isChecked());
         }
     }

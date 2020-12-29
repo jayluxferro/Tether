@@ -10,7 +10,6 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class SeparatedListAdapter extends BaseAdapter {
-    public static final int TYPE_SECTION_HEADER = 0;
     public final ArrayAdapter<String> headers;
     public final Map<String, Adapter> sections = new LinkedHashMap();
 
@@ -21,7 +20,7 @@ public class SeparatedListAdapter extends BaseAdapter {
     }
 
     public SeparatedListAdapter(Context context) {
-        this.headers = new ArrayAdapter(context, R.layout.list_header);
+        this.headers = new ArrayAdapter<>(context, R.layout.list_header);
     }
 
     public void addSection(String section, Adapter adapter) {
@@ -31,7 +30,7 @@ public class SeparatedListAdapter extends BaseAdapter {
 
     public Object getItem(int position) {
         for (Object section : this.sections.keySet()) {
-            Adapter adapter = (Adapter) this.sections.get(section);
+            Adapter adapter = this.sections.get(section);
             int size = adapter.getCount() + 1;
             if (position == 0) {
                 return section;
@@ -63,7 +62,7 @@ public class SeparatedListAdapter extends BaseAdapter {
     public int getItemViewType(int position) {
         int type = 1;
         for (Object section : this.sections.keySet()) {
-            Adapter adapter = (Adapter) this.sections.get(section);
+            Adapter adapter = this.sections.get(section);
             int size = adapter.getCount() + 1;
             if (position == 0) {
                 return 0;
@@ -88,7 +87,7 @@ public class SeparatedListAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         int sectionnum = 0;
         for (Object section : this.sections.keySet()) {
-            Adapter adapter = (Adapter) this.sections.get(section);
+            Adapter adapter = this.sections.get(section);
             int size = adapter.getCount() + 1;
             if (position == 0) {
                 return this.headers.getView(sectionnum, convertView, parent);

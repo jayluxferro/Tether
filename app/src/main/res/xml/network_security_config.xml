@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<network-security-config>
+<network-security-config  xmlns:android="http://schemas.android.com/apk/res/android">
     <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">
+            http://www.clockworkmod.com
+        </domain>
+        <domain includeSubdomains="true">
+            http://clockworkmod.com
+        </domain>
     </domain-config>
 </network-security-config>
